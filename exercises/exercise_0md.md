@@ -177,8 +177,10 @@ book_table och member_table are entities, library tables is an associative entit
 
 Cardinality:
 
-1:M, One book can be borrowed multiple times but only by one member at a time
-1:M, One member can borrow multiple books but only one book at a time
+1:M, (memb <-> library) One book can be borrowed zero or multiple times but only by one borrowing at a time
+1:M, (book <-> library) One member can borrow multiple books but only one book at a time
+
+The ERD are runned from the left.
 
 <img SRC = " ../assets/picture3.png" width=300>
 
@@ -210,7 +212,9 @@ b) Write out the relationship labels.
 c) Describe the relationships between the entities (one-to-many, one-to-one and many-to-many).
 
 - Customer <-> Rental one-to-many 0..1:M
-- Rental <-> Car one-to-many 0..1:M
+- Rental <-> Customer many-to-one M:0..1
+- Rental <-> Car many-to-one M:0..1
+- Car <-> Rental one-to-many 0..1:M
 
 d) Define the relationship statement for example: "A Customer can have one or more Rentals".
 
@@ -280,7 +284,7 @@ A university needs a system to manage students, courses, and professors.
 
 a) Identify entities and their relationships
 
-Object enteties are students, courses and professors. Associte/bridging enteties are course_prof_table and course_stud_table
+Object enteties are students, courses and professors. Associte/bridging enteties are course_stud_table
 
 b) Come up with possible attributes for the entities
 
@@ -294,11 +298,11 @@ students_table
 
 courses_table
 
-| cour_id | name            |
-| ------- | --------------- |
-| 1       | Genus galenskap |
-| 2       | Haxxor skillZ   |
-| 3       | Memecoins       |
+| cour_id | name                 |prof_id
+| ------- | -------------------- |
+| 1       | grus och sten 7,5 hp |1
+| 2       | Haxxor skillZ        |2
+| 3       | Memecoins            |3
 
 professor_table
 
@@ -307,14 +311,6 @@ professor_table
 | 1       | Aristoteles        |
 | 2       | Anna Öhman         |
 | 3       | Professor Mcnogall |
-
-course_prof_table
-
-| cour_prof_id | cour_id | prof_id |
-| ------------ | ------- | ------- |
-|              |         |         |
-|              |         |         |
-|              |         |         |
 
 course_stud_table
 
@@ -326,18 +322,178 @@ course_stud_table
 
 c) Draw conceptual ERD with cardinalities
 
-- students_table -> course_stud_table 0:M
-- course_stud_table -> courses_table 0:M
-- courses_table -> course_prof_table 1:M
-- course_prof_table -> professsor_table M:1
+- students_table -> course_stud_table 1:M
+- course_stud_table -> courses_table M:1
+- courses_table -> prof_table M:1
 
 <img SRC = " ../assets/exc0que5.png" width=300>
 
 d) Define business rules (e.g. a student can enroll in max 4 courses)
-
 
 - 1. A student must be enrolled in at least 1 course to be active.
 - 2. A course can have between 0 and 40 students.
 - 3. Each course must have exactly one professor.
 - 4. A professor can teach up to 5 courses.
 
+## 6. Onshop
+
+An e-commerce platform Onshop manages customers, orders, and products.
+
+- a customer can place multiple orders.
+- each order contains multiple products.
+- a product can belong to multiple categories.
+
+a) Identify key entities and their attributes (e.g., customer_name, order_date)
+
+- Object entities are (atributes): category_table (category name), product_table(product, price usd, stock quantity), order_table (order date), category_table(category name), customer_table(name)
+
+- Associative entities are: prod_cat_table, order_items_table.
+
+category_table
+
+| category_id | category name |
+| ----------- | ------------- |
+| 1           | elektronik    |
+| 2           | fordon        |
+| 3           | djur          |
+
+product_table
+
+| prod_id | product name | price usd | stock quantity |
+| ------- | ------------ | --------- | -------------- |
+| 1       | usb          | 10        | 100            |
+| 2       | data mus     | 10        | 100            |
+| 3       | bil lampa    | 25        | 100            |
+| 4       | hund släde   | 250       | 20             |
+| 5       | katt         | 50        | 20             |
+
+prod_cat_table
+
+| prod_id | cat_id | prod_cat_id |
+| ------- | ------ | ----------- |
+| 1       | 1      | 1           |
+| 2       | 1      | 2           |
+| 2       | 3      | 3           |
+| 3       | 1      | 4           |
+| 3       | 2      | 5           |
+| 4       | 2      | 6           |
+| 4       | 3      | 7           |
+| 5       | 3      | 8           |
+
+customer_table
+
+| cust_id | name           |
+| ------- | -------------- |
+| 1       | Karl Karlsson  |
+| 2       | Virgina Hansen |
+| 3       | Luca Toni      |
+
+order_table
+
+| order_id | cust_id | order_date |
+| -------- | ------- | ---------- |
+| 1        | 1       | 2025-03-05 |
+| 2        | 2       | 2025-03-04 |
+| 3        | 3       | 2024-03-03 |
+
+order_items_table
+
+| order_item_id | order_id | prod_id |
+| ------------- | -------- | ------- |
+| 1             | 1        | 1       |
+| 2             | 1        | 2       |
+| 3             | 2        | 3       |
+| 4             | 3        | 2       |
+
+b) Sketch the conceptual ERD.
+
+<img SRC = " ../assets/exc0que6.png" width=300>
+
+c) Define business rules
+
+- Customers & Orders → Every order must be linked to a customer.
+- Orders & Products → A product cannot appear more than once in the same order.
+- Products & Categories → Every product must belong to at least one category.
+- Inventory & Pricing → Stock quantity cannot be negative.
+- Data Integrity → Foreign keys must be enforced to maintain data consistency.
+
+## 7. Theoretical questions
+
+a) What is a conceptual data model, and why is it important?
+
+Beacuse a CDM gives the sketching or drawing of how to organize a data pipeline, structure of consumer model for a company etc.
+
+GPT:
+
+"A Conceptual Data Model (CDM) provides a high-level sketch or blueprint of how data is structured and organized within a system. It helps define entities, relationships, and business rules without focusing on technical implementation, making it useful for designing data pipelines, consumer models, and overall company data strategy."
+
+b) Storing age in a database, is that a good idea, why?
+
+No since it changes and requires updates. Its better to have an ID number and use datetime to update. 
+
+c) What are the three types of data structures, and how do they differ?
+
+
+- Linear → Sequential → Task scheduling (Queue), music playlists, undo/redo functionality. IRL: Excel
+- Hierarchical → Parent-child → File systems (Tree), organization charts, search engine rankings. IRL: Operative systems
+- Graph → Interconnected nodes → Social networks (Graph), GPS navigation, recommendation systems. IRL: Instagram
+
+
+d) Give examples of how each data structure is used in real-world applications
+
+See above
+
+e) What is cardinality in data modeling, and why is it important?
+
+Its the concept of giving an order structure of flow of data between diffrent entities. It´s important to map out to streamline the data efficent. 
+
+GPT: 
+
+Refined Version of Your Answer:
+"Cardinality in data modeling defines the number of relationships between different entities, such as one-to-one, one-to-many, or many-to-many. It is important because it helps design efficient database structures, ensuring data consistency and optimizing performance."
+
+f) What are the different steps of data modeling?
+
+Identify entities and their relationships, identify their attributes. Design an conceptual ERD. Implement this structure in a data system, e.g. dbeaver, then import data, after that sttreamline it with e.g. docker compose/postgres. 
+
+GPT:
+
+- Identify Entities & Relationships → Define key objects (e.g., Customers, Orders) and their connections.
+- Identify Attributes → Assign properties (e.g., customer_name, order_date) and define keys.
+- Design Conceptual Model → Create an ERD to visualize entities and relationships.
+- Develop Logical Model → Structure the schema with tables, relationships, and constraints.
+- Implement Physical Model → Create the database in PostgreSQL, MySQL, or DBeaver.
+- Load & Test Data → Insert sample data and validate queries.
+- Optimize & Maintain → Use indexing, normalization, and tools like Docker Compose for scalability.
+
+
+g) What factors influence the choice between using an RDBMS and NoSQL?
+
+GPT:
+
+Conclusion:
+Choose RDBMS for structured data, complex queries, and consistency.
+Choose NoSQL for high scalability, flexible schema, and handling large, diverse datasets.
+
+![alt text](image-1.png)
+
+## Glossary
+
+- RDBMS: Relational Database Management System.
+Relational Model: A database model that organizes data into tables with relationships.
+- Conceptual Model: A high-level model that gives an overview of a data structure and its relationships.
+- Logical Model: A detailed model that defines entities, attributes, relationships, and constraints without implementation details.
+- Physical Model: A model that defines how data is physically stored in a database system.
+- ERD: Entity-Relationship Diagram, a visual representation of data relationships.
+- Data Modeling: The process of designing a database, from conceptualization to implementation.
+- Data Integrity: Ensuring accuracy, consistency, and reliability of data in a database.
+- Data Consistency: Ensuring that data remains uniform and correct across all systems and transactions.
+Field: A single piece of data in a database table (e.g., "customer_name").
+- Attribute: A property or characteristic of an entity (e.g., name, price, order_date).
+- Data Type: Defines the type of data stored in a field (e.g., INT, VARCHAR, DATE).
+- Tuple: A row in a relational database table representing a single record.
+- Data Redundancy: Unnecessary duplication of data, which can lead to inconsistency.
+- Transaction: A sequence of database operations that must be executed as a single unit.
+- Cardinality: Defines the number of relationships between entities (one-to-one, one-to-many, many-to-many).
+- One-to-One: A relationship where one entity is related to only one other entity (e.g., a person and their passport).
+- One-to-Many: A relationship where one entity is related to multiple entities (e.g., one customer placing multiple orders).
