@@ -1,0 +1,1 @@
+<img SRC = " ../assets/lesson04.png" width=300>

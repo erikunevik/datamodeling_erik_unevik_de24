@@ -55,7 +55,7 @@ Doctor table
 | 3     | Luca |     |
 |       |      |     |
 
-<img SRC = " ../assets/picture2.png" width=300>
+<img SRC = " ../../assets/picture2.png" width=300>
 
 ## Expandera alt + shift + f
 
@@ -115,8 +115,6 @@ hospital_doctor_table
 | 2   | 1       | 2     |
 | 3   | 1       | 1     |
 | 4   | 2       | 1     |
-
-##Test a join##
 
 - Dr. Toni works at SÖS and Kardiologen
 - Dr. Lundgren at Sjukhusstock at both kardiolgen and neurologen
