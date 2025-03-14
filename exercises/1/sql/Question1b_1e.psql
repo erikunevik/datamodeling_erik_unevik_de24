@@ -1,0 +1,78 @@
+-- Question 1 b)
+
+SET search_path to health;
+
+INSERT INTO health.hospitaldepartment (hospital_id, department_id)
+values(3, 1);
+
+-- Question 1 c)
+
+SET search_path to health;
+
+INSERT INTO health.hospitaldepartment (hospital_id, department_id)
+values(2, 3);
+
+-- Question 1 d
+
+SET search_path to health;
+
+DELETE from hospital 
+WHERE hospital_id = 1;
+
+-- Question 1e
+
+SET search_path to health;
+
+ALTER TABLE health.hospitaldepartment 
+DROP CONSTRAINT hospitaldepartment_hospital_id_fkey,
+ADD CONSTRAINT hospitaldepartment_hospital_id_fkey
+FOREIGN KEY (hospital_id) REFERENCES health.hospital(hospital_id) ON DELETE CASCADE;
+
+ALTER TABLE health.hospitaldoctor 
+DROP CONSTRAINT hospitaldoctor_hospital_id_fkey,
+ADD CONSTRAINT hospitaldoctor_hospital_id_fkey
+FOREIGN KEY (hospital_id) REFERENCES health.hospital(hospital_id) ON DELETE CASCADE;
+
+SET search_path to health;
+
+DELETE FROM hospital 
+
+WHERE hospital_id = 1;
+
+-- To restore the deleted id 1, resettes all tables. 
+
+SET search_path TO health;
+
+TRUNCATE TABLE 
+    hospitaldoctor,
+    departmentdoctor,
+    hospitaldepartment,
+    doctor,
+    department,
+    hospital
+RESTART IDENTITY CASCADE;
+
+
+-- Question 1f
+
+INSERT INTO health.hospital (name, address) VALUES (NULL, 'Huddingevägen');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

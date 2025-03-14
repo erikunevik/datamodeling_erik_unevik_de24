@@ -1,0 +1,81 @@
+SET search_path to health;
+
+INSERT INTO hospital (name, address) 
+VALUES
+
+(
+'Sankt Görans Sjukhus', 
+'Sankt Göransplan 1'
+),
+
+(
+'Södersjukhuset', 
+'Sjukhusbacken 10'
+);
+
+
+INSERT INTO health.doctor (name) 
+VALUES
+
+(
+'Lars Larsson'
+),
+
+(
+'Eva Lundgren'
+),
+
+(
+'Luca Toni'
+);
+
+INSERT INTO health.department (name) 
+VALUES
+
+(
+'Kardiologi'
+),
+
+(
+'Neurologi'
+);
+
+
+INSERT INTO health.hospitaldepartment (hospital_id, department_id) 
+VALUES
+
+(
+1, 1
+),
+
+(
+1, 2
+),
+
+(
+2, 1
+),
+
+(
+2, 2
+);
+
+INSERT INTO health.departmentdoctor (department_id, doctor_id) 
+VALUES
+
+(1, 3),
+(1, 2),
+(2, 2),
+(2, 1);
+
+INSERT INTO health.hospitaldoctor (hospital_id, doctor_id) 
+VALUES
+
+(2, 3),
+(1, 2),
+(1, 1),
+(2, 1);
+
+
+
+
