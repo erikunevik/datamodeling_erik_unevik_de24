@@ -1,0 +1,18 @@
+SET search_path to ezecream_05;
+
+SELECT 
+    c.first_name, 
+    c.last_name, 
+    SUM(p.price * ol.quantity) AS total_price
+FROM customer c
+JOIN orders o ON c.customer_id = o.customer_id  -- Join customer on orders
+JOIN orderline ol ON o.order_id = ol.order_id  -- Get orders with orderlines
+JOIN product p ON p.product_id = ol.product_id  -- Get product
+WHERE c.first_name = 'Ivar' AND c.last_name = 'the Boneless'  
+GROUP BY c.first_name, c.last_name;
+
+
+
+
+
+
