@@ -1,0 +1,15 @@
+set search_path to exercise2b;
+
+select 
+    d.name,
+    h.name,
+    dep.name
+from workplace_doctor wd
+JOIN doctor d ON wd.doctor_id = d.doctor_id -- get name  
+JOIN hospital h ON wd.hospital_id = h.hospital_id -- get hospital name
+JOIN department dep ON wd.department_id = dep.department_id; -- get department
+
+
+
+
+

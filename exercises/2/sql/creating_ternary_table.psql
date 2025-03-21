@@ -1,0 +1,53 @@
+CREATE SCHEMA IF NOT EXISTS exercise2b;
+
+SET search_path to exercise2b;
+
+CREATE TABLE
+    IF NOT EXISTS Hospital (
+        hospital_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        address VARCHAR(255)
+    );
+
+SET search_path to exercise2b;
+
+CREATE TABLE
+    IF NOT EXISTS Doctor (
+        doctor_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL
+    );
+
+SET search_path to exercise2b;
+
+CREATE TABLE
+    IF NOT EXISTS Department (
+        department_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL
+    );
+
+SET search_path to exercise2b;
+
+CREATE TABLE
+    IF NOT EXISTS Hospitaldepartment (
+        hospital_id INTEGER NOT NULL,
+        department_id INTEGER NOT NULL, 
+        PRIMARY KEY (hospital_id, department_id),
+        FOREIGN KEY (hospital_id) REFERENCES Hospital (hospital_id) ON DELETE CASCADE,
+        FOREIGN KEY (department_id) REFERENCES Department (department_id) ON DELETE CASCADE
+    );
+
+SET search_path to exercise2b;
+
+CREATE TABLE IF NOT EXISTS
+    exercise2b.workplace_doctor (
+        doctor_id INTEGER NOT NULL,
+        department_id INTEGER NOT NULL,
+        hospital_id INTEGER NOT NULL,
+        PRIMARY KEY (doctor_id, department_id, hospital_id),
+        FOREIGN KEY (doctor_id) REFERENCES exercise2b.doctor (doctor_id) ON DELETE CASCADE,
+        FOREIGN KEY (department_id) REFERENCES exercise2b.department (department_id) ON DELETE CASCADE,
+        FOREIGN KEY (hospital_id) REFERENCES exercise2b.hospital (hospital_id) ON DELETE CASCADE
+    );
+
+
+

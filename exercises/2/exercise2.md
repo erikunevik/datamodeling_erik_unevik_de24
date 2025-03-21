@@ -30,9 +30,24 @@ Use the same ERD from Sakila as in exercise1 task 3.
 
 a) Is this normalized to 3NF?
 
-b) Lets zoom in to the inventory, explain how it works for tracking films in each stores.
+Yes it is since it first fufills 1NF, 2NF where all data i dependent on the prmary key and for 3nf since I cant find any transitional dependencies for the non key attributes. 
+
+b) Lets zoom in to the inventory, explain how it works for tracking films in each store.
+
+Through film table (FK) that contains all relevant info for each film, through connection to store (FK) where each customer makes a rental, ental  table in turn has inventory_id as FK.  
+
+Chatgpt: 
+
+Here’s how a rental transaction is tracked through the database:
+
+A store stocks movies → inventory table has film_id and store_id.
+A customer rents a movie → rental table records the inventory_id, linking the rental to a specific movie copy.
+The movie is returned → The return_date field in the rental table is updated.
+Payment is recorded → payment table records the rental transaction, linking it to rental_id.
 
 c) Do we have a way to know if a film is rented out or not?
+
+Yes by linking rental_id with rental_date and return_date, if there are a null value in return_date then the film is rented out. 
 
 ## 2. Revisiting the doctor example
 
@@ -80,6 +95,4 @@ g) Is a ternary relationship a bridge table
 | composite primary key      |         |
 | relational schema notation |         |
 | entity constriants         |         |
-|                            |         |
-|                            |         |
-|                            |         |
+
