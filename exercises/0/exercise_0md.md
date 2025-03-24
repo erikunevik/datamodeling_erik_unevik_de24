@@ -495,3 +495,4 @@ Field: A single piece of data in a database table (e.g., "customer_name").
 - Cardinality: Defines the number of relationships between entities (one-to-one, one-to-many, many-to-many).
 - One-to-One: A relationship where one entity is related to only one other entity (e.g., a person and their passport).
 - One-to-Many: A relationship where one entity is related to multiple entities (e.g., one customer placing multiple orders).
+
