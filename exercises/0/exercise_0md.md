@@ -480,7 +480,7 @@ Choose NoSQL for high scalability, flexible schema, and handling large, diverse 
 - RDBMS: Relational Database Management System.
 Relational Model: A database model that organizes data into tables with relationships.
 - Conceptual Model: A high-level model that gives an overview of a data structure and its relationships.
-- Logical Model: A detailed model that defines entities, attributes, relationships, and constraints without implementation details.
+- Logical Model: A detailed model that defines entities, attributes, relationships, and primary/foreign keys without implementation details..
 - Physical Model: A model that defines how data is physically stored in a database system.
 - ERD: Entity-Relationship Diagram, a visual representation of data relationships.
 - Data Modeling: The process of designing a database, from conceptualization to implementation.
