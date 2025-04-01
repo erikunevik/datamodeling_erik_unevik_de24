@@ -1,0 +1,26 @@
+Table school {
+school_id integer [primary key]
+name varchar(50) [not null]
+location varchar(50) [not null]
+address varchar(50) [not null]
+
+}
+
+Table program_enrollment {
+  school_id int [not null, ref: > school.school_id]
+  program_id int [not null, ref: > program.program_id]
+
+  Primary Key (school_id, program_id)
+}
+
+
+Table program {
+program_id integer [primary key]
+name varchar(50) [not null]
+
+}
+
+
+
+
+
