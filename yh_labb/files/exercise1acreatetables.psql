@@ -60,68 +60,133 @@ CREATE TABLE
     );
 
 
+SET search_path to yrkesco;
 
+CREATE TABLE
+    IF NOT EXISTS course (
+        course_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        points INTEGER NOT NULL,
+        description VARCHAR(255)    
+    );
 
+CREATE TABLE
+    IF NOT EXISTS course_enrollment (
+        course_id INTEGER NOT NULL,
+        class_id INTEGER NOT NULL, 
+        PRIMARY KEY (course_id, class_id),
+        FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+        FOREIGN KEY (class_id) REFERENCES class (class_id) ON DELETE CASCADE
+    );
 
-
-    Table class {
-class_id int [not null, primary key]
-program_id int [not null, ref: > program.program_id]
-course_director_id int [not null, ref: >  course_director.course_director_id]
-}
-
-
-
-
-
+SET search_path to yrkesco;
 
 
 CREATE TABLE
-    IF NOT EXISTS Hospitaldepartment (
-        hospital_id INTEGER NOT NULL,
-        department_id INTEGER NOT NULL, 
-        PRIMARY KEY (hospital_id, department_id),
-        FOREIGN KEY (hospital_id) REFERENCES Hospital (hospital_id) ON DELETE CASCADE,
-        FOREIGN KEY (department_id) REFERENCES Department (department_id) ON DELETE CASCADE
+    IF NOT EXISTS course_outside_program (
+        course_id INTEGER NOT NULL,
+        school_id INTEGER NOT NULL, 
+        PRIMARY KEY (course_id, school_id),
+        FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+        FOREIGN KEY (school_id) REFERENCES school (school_id) ON DELETE CASCADE
     );
 
 
--- CREATE TABLE
---     IF NOT EXISTS Hospital (
---         hospital_id SERIAL PRIMARY KEY,
---         name VARCHAR(50) NOT NULL,
---         address VARCHAR(255)
---     );
--- 0
--- SET search_path to exercise2b;
+SET search_path to yrkesco;
 
--- CREATE TABLE
---     IF NOT EXISTS Doctor (
---         doctor_id SERIAL PRIMARY KEY,
---         name VARCHAR(50) NOT NULL
---     );
-
--- SET search_path to exercise2b;
-
--- CREATE TABLE
---     IF NOT EXISTS Department (
---         department_id SERIAL PRIMARY KEY,
---         name VARCHAR(50) NOT NULL
---     );
-
--- SET search_path to exercise2b;
+CREATE TABLE
+    IF NOT EXISTS student (
+        student_id SERIAL PRIMARY KEY
+    ); 
 
 
+CREATE TABLE
+    IF NOT EXISTS student_info (
+        student_id INTEGER PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        email VARCHAR(100) UNIQUE,
+        personal_number INTEGER UNIQUE,    
+        FOREIGN KEY (student_id) REFERENCES student (student_id) ON DELETE CASCADE    
+    );
 
--- SET search_path to exercise2b;
+SET search_path to yrkesco;
 
--- CREATE TABLE IF NOT EXISTS
---     exercise2b.workplace_doctor (
---         doctor_id INTEGER NOT NULL,
---         department_id INTEGER NOT NULL,
---         hospital_id INTEGER NOT NULL,
---         PRIMARY KEY (doctor_id, department_id, hospital_id),
---         FOREIGN KEY (doctor_id) REFERENCES exercise2b.doctor (doctor_id) ON DELETE CASCADE,
---         FOREIGN KEY (department_id) REFERENCES exercise2b.department (department_id) ON DELETE CASCADE,
---         FOREIGN KEY (hospital_id) REFERENCES exercise2b.hospital (hospital_id) ON DELETE CASCADE
---     );
+CREATE TABLE
+    IF NOT EXISTS consult_info (
+        consult_info_id SERIAL PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        address VARCHAR(255),
+        email VARCHAR(100) UNIQUE,
+        hire_date DATE,
+        personal_number INTEGER UNIQUE, 
+        company_name VARCHAR(100),
+        company_info VARCHAR(100),  
+        organization_number INTEGER,
+        approved_ftax BOOLEAN,
+        company_address VARCHAR (255),
+        fee_hour INTEGER
+    );
+
+SET search_path to yrkesco;
+
+CREATE TABLE IF NOT EXISTS teacher (
+    teacher_id SERIAL PRIMARY KEY,
+    staff_info_id INTEGER,
+    consult_info_id INTEGER,
+    FOREIGN KEY (staff_info_id) REFERENCES staff_info (staff_info_id) ON DELETE CASCADE,
+    FOREIGN KEY (consult_info_id) REFERENCES consult_info (consult_info_id) ON DELETE CASCADE,
+    CHECK (
+        (staff_info_id IS NOT NULL AND consult_info_id IS NULL)
+     OR (staff_info_id IS NULL AND consult_info_id IS NOT NULL)
+    )
+);
+
+SET search_path to yrkesco;
+
+
+CREATE TABLE
+    IF NOT EXISTS teacher_list (
+        course_id INTEGER NOT NULL,
+        teacher_id INTEGER NOT NULL, 
+        PRIMARY KEY (course_id, teacher_id),
+        FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+        FOREIGN KEY (teacher_id) REFERENCES teacher (teacher_id) ON DELETE CASCADE
+    );
+
+SET search_path to yrkesco;
+
+CREATE TABLE
+    IF NOT EXISTS vocational_provider (
+        vocational_provider_id SERIAL PRIMARY KEY,
+        staff_info_id INTEGER, 
+        FOREIGN KEY (staff_info_id) REFERENCES staff_info (staff_info_id) ON DELETE CASCADE   
+    );    
+
+SET search_path to yrkesco;
+
+CREATE TABLE
+    IF NOT EXISTS student_enrollment (
+        course_id INTEGER NOT NULL,
+        student_id INTEGER NOT NULL, 
+        PRIMARY KEY (course_id, student_id),
+        FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+        FOREIGN KEY (student_id) REFERENCES student (student_id) ON DELETE CASCADE
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

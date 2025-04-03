@@ -96,6 +96,8 @@ Third, it fufills 3NF since:
 
 I reached this level of normalization by dividing my entities and many to many relationships into the right amount of tables.  
 
+GLÖM EJ TEACHER CHECK STATMENT!
+
 
 
 
