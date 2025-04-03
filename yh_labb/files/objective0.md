@@ -66,11 +66,39 @@ Teacher - Consult Info
 
 ## d)
 
-For unknown reason  when this file from from Lucid Charts, my double crossed crow´s feet notation between Teacher and Consult Info does not appear in the picture but at Lucis charts, even after multiple attempts to save it again.
+For unknown reason  when this file from from Lucid Charts, my double crossed crow´s feet notation between staff Info and Vocational provider does not appear in the picture but at Lucis charts, even after multiple attempts to save it again.
 
-<img src = "../assets/0d3.png">
+<img src = "../assets/0d8.png">
 
 ## e)
+
+<img src = "../assets/0e2.jpg">
+
+For syntax run 0e.dbml
+
+## f)
+
+My physical model fufills 3NF beacuse it first off fufills 1NF since:
+
+- Each column contain only value per row, no list, sets or arrays
+- Each table has a primary key that uniquely identifies each row
+- Each column contains data of the same type
+- Rows and columns are unordered
+
+Secondly it fufills 2NF since:
+
+- It is already in 1NF
+- All attributes are functionally dependent on the entire primary key. E.g the attribute "grade" in student_enrollment are dependent on the whole composite-primary key and not just course_id or student_id, since a student must take a course in order to get a grade. 
+
+Third, it fufills 3NF since:
+
+- All my non-prime attributes depend on the whole primary key. Even in the table with the most attributes like consulti_info, all of them depend soley on consult_id, i.e. there are no transitive dependencies between non-prime attributes. 
+
+I reached this level of normalization by dividing my entities and many to many relationships into the right amount of tables.  
+
+
+
+
 
 
 
