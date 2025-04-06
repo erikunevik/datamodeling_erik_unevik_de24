@@ -15,10 +15,12 @@ Table program_enrollment {
 Table program {
 program_id integer [not null, primary key]
 name varchar(50) [not null]
+
 }
 
 Table class {
 class_id int [not null, primary key]
+year int [not null]
 program_id int [not null, ref: > program.program_id]
 course_director_id int [not null, ref: >  course_director.course_director_id]
 }
@@ -72,8 +74,12 @@ Table student_info {
 
 Table vocational_provider {
   vocational_provider_id integer [not null, primary key]
-  school_id int [not null, ref: > school.school_id]
   staff_info_id int [not null, ref: > staff_info.staff_info_id]
+}
+
+Table vocational_provider_location {
+  vocational_provider_id int [not null, ref: > vocational_provider.vocational_provider_id]
+  school_id int [not null, ref: > school.school_id]
 }
 
 Table teachers_list {

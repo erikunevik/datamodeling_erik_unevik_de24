@@ -1,0 +1,78 @@
+-- 1 Insert Consultants
+
+
+INSERT INTO yrkesco.consult_info (
+    first_name, last_name, address, email, hire_date, personal_number,
+    company_name, company_info, organization_number, approved_ftax,
+    company_address, fee_hour
+) VALUES
+('Brooke', 'Leonard', '399 Christine Manor, Sarahborough, VT 41681', 'randy47@hickman-walls.com', '2023-01-21', '199911838425', 'Suarez LLC', 'Horizontal cohesive intranet', 7316648259, FALSE, '841 Joseph Coves, West Juan, VT 45443', 532),
+('James', 'Walters', '0164 Adam Trail Apt. 427, Hoffmanville, UT 20037', 'brandi26@williams.com', '2021-05-07', '193315869232', 'Keith Inc', 'Enhanced user-facing groupware', 5360837474, TRUE, '0733 Bailey View, East Andrew, MO 43526', 595),
+('Joshua', 'Jones', '868 Crosby Crescent Suite 294, North Candacestad, WY 41615', 'cruzbarbara@yahoo.com', '2016-01-06', '196088356159', 'Alvarado-Martinez', 'Innovative motivating function', 7159250505, TRUE, '236 Byrd Extensions Suite 680, Justinchester, OR 80017', 738),
+('Diana', 'Marshall', '721 Robertson Roads, Clarencebury, ME 29945', 'andrewsanchez@carr-mack.info', '2022-04-24', '199367632016', 'Thompson Ltd', 'Programmable maximized application', 2394039673, TRUE, 'PSC 1727, Box 8895, APO AA 80802', 1074),
+('Lisa', 'Mcclain', '77434 Sims Harbor Suite 143, Matthewside, DC 20270', 'tbenson@brown.com', '2023-03-10', '196036690967', 'Bender LLC', 'Versatile human-resource instruction set', 3856070374, TRUE, '7065 Ramsey Ville Suite 298, South Brittanytown, SD 56680', 1233);
+
+-- 2 Insert hired teachers
+
+INSERT INTO yrkesco.staff_info (
+    first_name, last_name, address, email, hire_date, personal_number
+) VALUES
+('Filip', 'Lindström', 'Bergsundsgatan 44, 117 37 Stockholm', 'filip.lindström@yrkesco.se', '2016-06-08', '197204199667'),
+('Greta', 'Nyberg', 'Kvarngatan 98, 212 36 Malmö', 'greta.nyberg@yrkesco.se', '2019-03-15', '198801304365'),
+('Mikael', 'Dahl', 'Bergsgatan 56, 214 22 Malmö', 'mikael.dahl@yrkesco.se', '2017-08-28', '198104074149'),
+('Saga', 'Ström', 'Storgatan 5, 582 23 Linköping', 'saga.ström@yrkesco.se', '2020-09-17', '196904279899'),
+('Johan', 'Söderberg', 'Erik Dahlbergsgatan 12, 115 20 Stockholm', 'johan.söderberg@yrkesco.se', '2018-01-25', '197611126052'),
+('Malin', 'Ek', 'Södra Förstadsgatan 1, 211 43 Malmö', 'malin.ek@yrkesco.se', '2015-11-13', '197801221193'),
+('Albin', 'Wallin', 'Västra Storgatan 44, 553 15 Jönköping', 'albin.wallin@yrkesco.se', '2022-02-07', '198210152161'),
+('Nora', 'Forsberg', 'Östra Hamngatan 24, 411 09 Göteborg', 'nora.forsberg@yrkesco.se', '2016-12-04', '199504153379'),
+('Anton', 'Engström', 'Västmannagatan 10, 113 25 Stockholm', 'anton.engström@yrkesco.se', '2021-05-19', '199104087351'),
+('Emma', 'Åberg', 'Norra Vägen 65, 392 34 Kalmar', 'emma.åberg@yrkesco.se', '2018-07-30', '198902259342');
+
+
+--3  Inserting them into yrkesco.teacher table
+
+    -- Insert staff-based teachers
+    INSERT INTO yrkesco.teacher (staff_info_id) VALUES
+    (10), (11), (12), (13), (14), (15), (16), (17), (18), (19);
+
+    -- Insert consultant-based teachers
+    INSERT INTO yrkesco.teacher (consult_info_id) VALUES
+    (1), (2), (3), (4), (5);
+
+-- 4 Assigning courses to teachers 
+
+INSERT INTO yrkesco.teacher_list (course_id, teacher_id) VALUES
+(5, 1),
+(16, 1),
+(18, 1),
+(27, 1),
+(1, 2),
+(9, 2),
+(2, 3),
+(25, 3),
+(7, 4),
+(14, 4),
+(3, 5),
+(10, 5),
+(8, 6),
+(15, 6),
+(4, 7),
+(19, 7),
+(6, 8),
+(11, 8),
+(12, 9),
+(22, 9),
+(21, 10),
+(23, 10),
+(20, 11),
+(24, 11),
+(13, 12),
+(26, 13),
+(17, 14),
+(28, 15);
+
+
+
+
+
+

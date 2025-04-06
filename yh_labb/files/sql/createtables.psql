@@ -2,14 +2,12 @@ CREATE SCHEMA IF NOT EXISTS yrkesco;
 
 SET search_path to yrkesco;
 
-
-
 CREATE TABLE
     IF NOT EXISTS school (
         school_id SERIAL PRIMARY KEY,
         name VARCHAR(50) NOT NULL,
         location VARCHAR(50) NOT NULL,
-        address VARCHAR(255)
+        address VARCHAR(255) NOT NULL
     );
 
 SET search_path to yrkesco;
@@ -20,6 +18,8 @@ CREATE TABLE
         program_id SERIAL PRIMARY KEY,
         name VARCHAR(50) NOT NULL
     );    
+
+
 
 CREATE TABLE
     IF NOT EXISTS program_enrollment (
@@ -37,10 +37,10 @@ CREATE TABLE
         staff_info_id SERIAL PRIMARY KEY,
         first_name VARCHAR(50) NOT NULL,
         last_name VARCHAR(50) NOT NULL,
-        address VARCHAR(255),
-        email VARCHAR(100) UNIQUE,
-        hire_date DATE,
-        personal_number INTEGER unique        
+        address VARCHAR(255) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        hire_date DATE NOT NULL,
+        personal_number VARCHAR(15) UNIQUE NOT NULL        
     );
 
 CREATE TABLE
@@ -55,10 +55,10 @@ CREATE TABLE
         class_id SERIAL PRIMARY KEY,
         program_id INTEGER NOT NULL, 
         course_director_id INTEGER NOT NULL, 
+        year INTEGER NOT NULL,
         FOREIGN KEY (course_director_id) REFERENCES course_director (course_director_id) ON DELETE CASCADE,
         FOREIGN KEY (program_id) REFERENCES program (program_id) ON DELETE CASCADE
     );
-
 
 SET search_path to yrkesco;
 
@@ -73,7 +73,8 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS course_enrollment (
         course_id INTEGER NOT NULL,
-        class_id INTEGER NOT NULL, 
+        class_id INTEGER NOT NULL,
+        grade VARCHAR(10) NOT NULL, 
         PRIMARY KEY (course_id, class_id),
         FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
         FOREIGN KEY (class_id) REFERENCES class (class_id) ON DELETE CASCADE
@@ -99,14 +100,13 @@ CREATE TABLE
         student_id SERIAL PRIMARY KEY
     ); 
 
-
 CREATE TABLE
     IF NOT EXISTS student_info (
         student_id INTEGER PRIMARY KEY,
         first_name VARCHAR(50) NOT NULL,
         last_name VARCHAR(50) NOT NULL,
-        email VARCHAR(100) UNIQUE,
-        personal_number INTEGER UNIQUE,    
+        email VARCHAR(100) UNIQUE NOT NULL,
+        personal_number VARCHAR(15) UNIQUE,    
         FOREIGN KEY (student_id) REFERENCES student (student_id) ON DELETE CASCADE    
     );
 
@@ -117,16 +117,16 @@ CREATE TABLE
         consult_info_id SERIAL PRIMARY KEY,
         first_name VARCHAR(50) NOT NULL,
         last_name VARCHAR(50) NOT NULL,
-        address VARCHAR(255),
-        email VARCHAR(100) UNIQUE,
-        hire_date DATE,
-        personal_number INTEGER UNIQUE, 
-        company_name VARCHAR(100),
-        company_info VARCHAR(100),  
-        organization_number INTEGER,
-        approved_ftax BOOLEAN,
-        company_address VARCHAR (255),
-        fee_hour INTEGER
+        address VARCHAR(255) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        hire_date DATE NOT NULL,
+        personal_number VARCHAR(12) UNIQUE NOT NULL, 
+        company_name VARCHAR(100) NOT NULL,
+        company_info VARCHAR(100) NOT NULL,  
+        organization_number BIGINT NOT NULL,
+        approved_ftax BOOLEAN NOT NULL,
+        company_address VARCHAR (255) NOT NULL,
+        fee_hour INTEGER NOT NULL
     );
 
 SET search_path to yrkesco;
@@ -174,6 +174,14 @@ CREATE TABLE
         FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
         FOREIGN KEY (student_id) REFERENCES student (student_id) ON DELETE CASCADE
     );
+
+CREATE TABLE IF NOT EXISTS yrkesco.vocational_provider_location (
+    vocational_provider_id INTEGER NOT NULL,
+    school_id INTEGER NOT NULL,
+    PRIMARY KEY (vocational_provider_id, school_id),
+    FOREIGN KEY (vocational_provider_id) REFERENCES vocational_provider(vocational_provider_id) ON DELETE CASCADE,
+    FOREIGN KEY (school_id) REFERENCES school(school_id) ON DELETE CASCADE
+);
 
 
 

@@ -6,7 +6,7 @@ Done
 
 ## b)
 
-<img src = "../assets/0b15.png">
+<img src = "../assets/0b16.png">
 
 ## c)
 
@@ -40,8 +40,11 @@ Student Enrollment - Student
 Student - Student Info
 - Each student has an individual record in student info, and each Student Info record is linked to one indivudal Student.
 
-Vocational Provider - School
-- A Vocational Provider may work at many schools , but each School is linked to one Vocational Provider.
+Vocational Provider Location - School
+- A Vocational Provider Location record may be linked to many schools , but each School is linked to one Vocational Provider Location record.
+
+Vocational Provider - Vocational Provider Location 
+- A Vocational Provider may be linked to one record in Vocational Provider Location , and each Vocational Provider record linked to one Vocational Provider .
 
 Vocational Provider - Staff Info
 - Each Vocational Provider has one individual record in Staff Info, and each Staff Info record is linked to one Vocational Provider. 
@@ -66,9 +69,7 @@ Teacher - Consult Info
 
 ## d)
 
-For unknown reason  when this file from from Lucid Charts, my double crossed crow´s feet notation between staff Info and Vocational provider does not appear in the picture but at Lucis charts, even after multiple attempts to save it again.
-
-<img src = "../assets/0d8.png">
+<img src = "../assets/0d10.png">
 
 ## e)
 
@@ -96,7 +97,6 @@ Third, it fufills 3NF since:
 
 I reached this level of normalization by dividing my entities and many to many relationships into the right amount of tables.  
 
-GLÖM EJ TEACHER CHECK STATMENT!
 
 
 

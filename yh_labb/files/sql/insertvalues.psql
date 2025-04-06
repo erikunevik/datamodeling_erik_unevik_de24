@@ -1,0 +1,239 @@
+-- Schools
+
+SET search_path to yrkesco;
+
+INSERT INTO school (name, location, address)
+VALUES 
+  ('YrkesCo Stockholm', 'Stockholm', 'Sveavägen 10'),
+  ('YrkesCo Göteborg', 'Göteborg', 'Kungsportsavenyen 5'),
+  ('YrkesCo Malmö', 'Malmö', 'Södra Förstadsgatan 8');
+
+-- Programs 
+
+INSERT INTO yrkesco.program (name)
+VALUES 
+  ('Data Engineer'),
+  ('Java Developer'),
+  ('Railway Project Engineer'),
+  ('Cyber Security'),
+  ('Electrical Installation Project Manager'),
+  ('HVAC Engineer'),
+  ('BIM Design for Infrastructure');
+
+-- Assign programs to Stockholm and Göteborg schools
+
+INSERT INTO yrkesco.program_enrollment (school_id, program_id)
+VALUES
+  (1, 1), -- Stockholm, Data Engineer
+  (1, 2), -- Stockholm, Java Developer
+  (2, 3), -- Göteborg, Railway Project Engineer
+  (2, 4), -- Göteborg, Cyber Security
+  (3, 5), -- Malmö, Electrical Installation Project Manager
+  (3, 6), -- Malmö, HVAC Engineer
+  (1, 7); -- Stockholm, BIM Design
+
+
+
+ -- Inserting more programs located at different schhols
+
+INSERT INTO yrkesco.program_enrollment (school_id, program_id)
+VALUES 
+  (1, 1),
+  (2, 1),
+  (1, 4),
+  (2, 4),
+  (3, 4),
+  (2, 6),
+  (3, 6)
+ON CONFLICT DO NOTHING; -- If a pair exists - it will just be overstepped. 
+
+-- Inserting Vocational providers
+
+  --1
+
+-- Insert two vocational providers into staff_info
+INSERT INTO yrkesco.staff_info (first_name, last_name, address, email, hire_date, personal_number)
+VALUES
+  ('Eva', 'Andersson', 'Rosenlundsgatan 1, Stockholm', 'eva.andersson@yrkesco.se', '2018-08-10', '19790810-1122'),
+  ('Lars', 'Berg', 'Lindholmen 12, Göteborg', 'lars.berg@yrkesco.se', '2019-04-22', '19800422-3344');
+
+    --2
+
+INSERT INTO yrkesco.vocational_provider (staff_info_id)
+VALUES
+  (1),  -- Eva
+  (2);  -- Lars
+
+    --3 Assigning them schools
+
+INSERT INTO yrkesco.vocational_provider_location (vocational_provider_id, school_id)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3);
+
+
+-- Inserting Course Directors
+
+
+ --1 
+
+INSERT INTO yrkesco.staff_info (first_name, last_name, address, email, hire_date, personal_number)
+VALUES
+  ('Alice', 'Nilsson', 'Address 1', 'alice@yrkesco.se', '2020-01-01', '19800101-1111'),
+  ('Bob', 'Svensson', 'Address 2', 'bob@yrkesco.se', '2020-01-01', '19800101-2222'),
+  ('Carla', 'Larsson', 'Address 3', 'carla@yrkesco.se', '2020-01-01', '19800101-3333'),
+  ('David', 'Andersson', 'Address 4', 'david@yrkesco.se', '2020-01-01', '19800101-4444'),
+  ('Ella', 'Johansson', 'Address 5', 'ella@yrkesco.se', '2020-01-01', '19800101-5555'),
+  ('Fredrik', 'Ek', 'Address 6', 'fredrik@yrkesco.se', '2020-01-01', '19800101-6666'),
+  ('Greta', 'Lund', 'Address 7', 'greta@yrkesco.se', '2020-01-01', '19800101-7777');
+
+
+-- 2
+
+INSERT INTO yrkesco.course_director (staff_info_id)
+VALUES (3), (4), (5), (6), (7), (8), (9);
+
+-- 3
+
+INSERT INTO yrkesco.class (program_id, course_director_id, year) VALUES
+-- Program 1
+(1, 1, 2022),
+(1, 2, 2023),
+(1, 3, 2024),
+
+-- Program 2
+(2, 4, 2022),
+(2, 5, 2023),
+(2, 6, 2024),
+
+-- Program 3
+(3, 7, 2022),
+(3, 1, 2023),
+(3, 2, 2024),
+
+-- Program 4
+(4, 3, 2022),
+(4, 4, 2023),
+(4, 5, 2024),
+
+-- Program 5
+(5, 6, 2022),
+(5, 7, 2023),
+(5, 1, 2024),
+
+-- Program 6
+(6, 2, 2022),
+(6, 3, 2023),
+(6, 4, 2024),
+
+-- Program 7
+(7, 5, 2022),
+(7, 6, 2023),
+(7, 7, 2024);
+
+
+-- Creating courses
+
+INSERT INTO yrkesco.course (name, points, description) VALUES
+-- Data Engineer
+('Python Programming', 25, 'Hands-on training in Python for data workflows'),
+('SQL & Data Modeling', 20, 'Relational databases and SQL for querying data'),
+('ETL & Data Pipelines', 30, 'Data extraction, transformation and loading'),
+('Big Data & Cloud Tools', 20, 'Introduction to cloud platforms and big data concepts'),
+
+-- Java Developer
+('Java Fundamentals', 25, 'Object-oriented programming with Java'),
+('Spring Boot & APIs', 20, 'Building web services with Spring framework'),
+('Version Control with Git', 10, 'Using Git and GitHub in team environments'),
+('Agile Software Development', 15, 'Scrum, Kanban and team collaboration'),
+
+-- Railway Project Engineer
+('Railway Safety Standards', 20, 'Regulations and practices in railway projects'),
+('Track Construction & Planning', 25, 'Planning and layout of rail systems'),
+('Project Management Basics', 15, 'Managing timelines, resources, and teams'),
+('Technical Documentation', 10, 'Professional report and document creation'),
+
+-- Cyber Security
+('Cyber Threats & Defense', 25, 'Understanding modern cyber threats'),
+('Network Security Fundamentals', 20, 'Protecting networks and systems'),
+('Ethical Hacking Basics', 15, 'Intro to penetration testing and white-hat practices'),
+('Security Auditing & Compliance', 20, 'Assessing systems and meeting security standards'),
+
+-- Electrical Installation Project Manager
+('Electrical Systems & Safety', 20, 'Working with electrical installations safely'),
+('Project Coordination', 15, 'Leading multi-disciplinary electrical projects'),
+('Cost Estimation & Budgeting', 15, 'Estimating materials and project costs'),
+
+-- HVAC Engineer
+('HVAC System Design', 25, 'Designing ventilation and heating systems'),
+('Energy Efficiency & Sustainability', 20, 'Green HVAC engineering principles'),
+('Indoor Climate Control', 15, 'Regulating humidity, airflow and temperature'),
+
+-- BIM Design for Infrastructure
+('Intro to BIM & 3D Modeling', 20, 'Basics of Building Information Modeling'),
+('Infrastructure Modeling in Revit', 25, 'Practical use of Autodesk Revit'),
+('Coordination & Clash Detection', 15, 'Cross-discipline coordination and BIM tools');
+
+
+-- Linking courses to classes/programs
+
+SET search_path TO yrkesco;
+
+INSERT INTO course_enrollment (course_id, class_id) VALUES
+-- Program 1: Data Engineer (class_id: 1–3)
+(1, 1), (2, 1), (3, 1),
+(2, 2), (3, 2), (4, 2),
+(1, 3), (4, 3),
+
+-- Program 2: Java Developer (4–6)
+(5, 4), (6, 4), (7, 4),
+(5, 5), (8, 5),
+(6, 6), (7, 6), (8, 6),
+
+-- Program 3: Railway Project Engineer (7–9)
+(9, 7), (10, 7), (11, 7),
+(9, 8), (11, 8),
+(10, 9), (12, 9),
+
+-- Program 4: Cyber Security (10–12)
+(13, 10), (14, 10),
+(13, 11), (15, 11),
+(14, 12), (16, 12),
+
+-- Program 5: Electrical Installation PM (13–15)
+(17, 13), (18, 13),
+(17, 14), (19, 14),
+(18, 15), (19, 15),
+
+-- Program 6: HVAC Engineer (16–18)
+(20, 16), (21, 16),
+(20, 17), (22, 17),
+(21, 18),
+
+-- Program 7: BIM Design for Infrastructure (19–21)
+(23, 19), (24, 19),
+(23, 20), (25, 20),
+(24, 21), (25, 21);
+
+
+-- Inserting courses that are outside of programs
+
+    -- 1)
+
+INSERT INTO yrkesco.course (name, points, description) VALUES
+('Digital Communication Tools', 10, 'Online collaboration and productivity tools'),
+('Team Collaboration & Agile', 15, 'Working in teams using agile methodologies'),
+('Workplace Ethics & Law', 10, 'Understanding workplace rules, rights, and responsibilities');
+
+    -- 2)
+
+INSERT INTO yrkesco.course_outside_program (course_id, school_id)
+SELECT course_id, 1 FROM yrkesco.course WHERE name = 'Digital Communication Tools';
+
+INSERT INTO yrkesco.course_outside_program (course_id, school_id)
+SELECT course_id, 2 FROM yrkesco.course WHERE name = 'Team Collaboration & Agile';
+
+INSERT INTO yrkesco.course_outside_program (course_id, school_id)
+SELECT course_id, 3 FROM yrkesco.course WHERE name = 'Workplace Ethics & Law';
+

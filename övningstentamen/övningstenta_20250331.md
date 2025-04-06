@@ -57,7 +57,7 @@ You have identified a **one-to-many** relationship between two entities in your 
 
 Easier to describe with an example. In a store one customer can place many orders, but each order are related to only that customer. I.e. it describes a relation where one object has multiple relations on one way but on the other way only has a single relation. 
 
-On the many side it should be a foreign key and primary key on the single side.
+On the "many" side it should contain a foreign key and a primary key on the "one" side.
 
 ---
 
@@ -67,7 +67,7 @@ You have identified a **many-to-many** relationship between two entities in your
 
 E.g. A Multiple courses may have many students, and multiple students may enlist to many courses between two object entities/tables. This will create an error if you try to run a query or filter the data beacuse it will not be possible to ascertain which indiviudal student that atends which individual course, you need to create a bridge table in between.
 
-You need to create junction table. 
+You need to create junction table between the primary entities where you will place foreign keys to create a one-to-many relation. This to assure referntial integrity (?).
 
 ---
 
@@ -76,7 +76,7 @@ You need to create junction table.
 
 You ascertain it by seeing to that any composite entity/child table has an assigned foreign key. 
 
-You prevent orphaned records. Can use cascade delete. 
+It is desriable since you e.g. prevent orphaned records. Can use cascade delete. 
 
 ---
 
@@ -110,7 +110,7 @@ You prevent orphaned records. Can use cascade delete.
 ## Is this structured, semi-structured, or unstructured data?
 Describe how you would store this data.
 
-The data is semistructured since it comes in Json format and would put in mongodb
+The data is semistructured since it comes in Json format and would store it in mongodb
 
 ##)Question 9
 
@@ -120,14 +120,14 @@ a) Which type of ERD is this? (1p)
 Conceptual
 
 b) Write out possible relationship statements for each entity. (2p)
-A hotel has on or many rooms, the room belons to one hotel
-A room hos zero or more reservations, a reservation belongs only to that room
-A customer makes one or more reservations, that reservation belongs to that customer
-A hotel hos zero or many customers, Zero or many customers belong to one hotel?
+- A hotel has one or many rooms, but each room belongs to one hotel
+- A room hos zero or more reservations, a reservation belongs to one room
+- A customer makes one or more reservations, each reservation belongs to one customer
+- A hotel has zero or many customers, Customers has/stays/belongs (?) to zero or many hotels?
 
 c) This diagram can't be implemented – which part needs to change and how should it be changed? (2p)
 
-It needs a bridge table between customer and hotel called e.g. hotel_customer where the many side will be placed towards hotel_customer and one side towards hotel and customer. 
+It needs a bridge table between customer and hotel called e.g. hotel_customer where the many side will be placed towards hotel_customer with foreign keys and the one side towards hotel and customer where primary keys are stored. 
 
 d) Write in relational schema notation a few possible attributes for each entity. (2p)
 
