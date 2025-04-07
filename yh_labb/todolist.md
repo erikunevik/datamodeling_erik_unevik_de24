@@ -1,0 +1,3 @@
+- Lägg till tacher i conceptuel.
+- Ändra one to one i dbml filen. 
+- Uppdatera alla bilder i quesetions. 

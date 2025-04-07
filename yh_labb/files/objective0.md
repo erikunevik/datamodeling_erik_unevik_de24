@@ -6,7 +6,7 @@ Done
 
 ## b)
 
-<img src = "../assets/0b16.png">
+<img src = "../assets/0b17.png">
 
 ## c)
 
@@ -67,13 +67,17 @@ Teacher - Staff Info
 Teacher - Consult Info
 - If a teacher is a consultant they will have an individual record in Consult Info, and each record in Consult Info is linked to one teacher if she or he is an consultant. 
 
+Consult Info - Staff Info
+- One consult_info row must reference exactly one staff_info row,
+One staff_info row may be referenced by zero or one consult_info row.
+
 ## d)
 
-<img src = "../assets/0d10.png">
+<img src = "../assets/0d12.png">
 
 ## e)
 
-<img src = "../assets/0e2.jpg">
+<img src = "../assets/0e3.jpg">
 
 For syntax run 0e.dbml
 
@@ -93,9 +97,11 @@ Secondly it fufills 2NF since:
 
 Third, it fufills 3NF since:
 
-- All my non-prime attributes depend on the whole primary key. Even in the table with the most attributes like consulti_info, all of them depend soley on consult_id, i.e. there are no transitive dependencies between non-prime attributes. 
 
-I reached this level of normalization by dividing my entities and many to many relationships into the right amount of tables.  
+- All my non-prime attributes depend on the whole primary key, and there are no transitive dependencies between non-prime attributes. One example for how I solved this was by putting consultant attributes like name, address etc. into Staff Info as way to normalize structure towards 3NF, instead of keeping it in consultinfo which was my first plan. 
+Another example was that I decided to delete the attribute address from School table since address is dependent on location and not directly school_id. 
+
+
 
 
 

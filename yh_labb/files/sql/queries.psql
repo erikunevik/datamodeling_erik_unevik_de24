@@ -1,4 +1,4 @@
--- 1) Showing which programs that run on which schools
+--- Showing which programs that run on which schools
 
 SET search_path TO yrkesco;
 
@@ -10,7 +10,31 @@ JOIN program AS p ON pe.program_id = p.program_id
 JOIN school AS s ON pe.school_id = s.school_id
 GROUP BY p.name;
 
--- 2) Showing which Vocational providers that has responsible for which school
+
+--- Staff list
+
+SELECT 
+    s.first_name || ' ' || s.last_name AS name,
+    CASE 
+        WHEN cd.course_director_id IS NOT NULL THEN 'Course Director'
+        WHEN vp.vocational_provider_id IS NOT NULL THEN 'Vocational Provider'
+        WHEN t.teacher_id IS NOT NULL THEN 'Teacher'
+        ELSE 'Staff'
+    END AS profession,
+    CASE 
+        WHEN ci.consult_info_id IS NOT NULL THEN 'Consultant'
+        ELSE 'Hired Staff'
+    END AS staff_type
+FROM yrkesco.staff_info s
+LEFT JOIN yrkesco.consult_info ci ON s.staff_info_id = ci.staff_info_id
+LEFT JOIN yrkesco.teacher t 
+    ON t.staff_info_id = s.staff_info_id OR (ci.consult_info_id IS NOT NULL AND t.consult_info_id = ci.consult_info_id)
+LEFT JOIN yrkesco.course_director cd ON cd.staff_info_id = s.staff_info_id
+LEFT JOIN yrkesco.vocational_provider vp ON vp.staff_info_id = s.staff_info_id
+ORDER BY staff_type, profession, name;
+
+
+--- Showing which Vocational providers that has responsible for which school
 
 SET search_path TO yrkesco;
 
@@ -24,8 +48,7 @@ JOIN staff_info si ON vp.staff_info_id = si.staff_info_id
 JOIN school s ON vpl.school_id = s.school_id
 GROUP BY vp.vocational_provider_id, si.first_name, si.last_name;
 
-
--- 3) Which programs and classes are the Course Directors responsible for. 
+--- Which programs and classes are the Course Directors responsible for. 
 
 SET search_path TO yrkesco;
 
@@ -40,21 +63,7 @@ JOIN yrkesco.program p ON c.program_id = p.program_id
 ORDER BY course_director, class_id;
 
 
-SET search_path TO yrkesco;
-
-
-SELECT DISTINCT
-    p.name AS program,
-    c.name AS course
-FROM course_enrollment ce
-JOIN class cl ON ce.class_id = cl.class_id
-JOIN program p ON cl.program_id = p.program_id
-JOIN course c ON ce.course_id = c.course_id
-WHERE p.name IN ('Data Engineer', 'BIM Design for Infrastructure')
-ORDER BY p.name, c.name;
-
-
--- To see all courses bound for the different programs in year 2022. 
+--- To see all courses bound for the different programs in year 2022. 
 
 
 SET search_path TO yrkesco;
@@ -129,114 +138,48 @@ ORDER BY s.name, c.name;
 
 --- The name of the teachers and how many courses they teach
 
-
-SET search_path TO yrkesco;
-
-SELECT
-    COALESCE(si.first_name, ci.first_name) || ' ' || COALESCE(si.last_name, ci.last_name) AS teacher_name,
+SELECT 
+    s.first_name || ' ' || s.last_name AS teacher_name,
     COUNT(tl.course_id) AS courses_taught
-FROM teacher t
-LEFT JOIN staff_info si ON t.staff_info_id = si.staff_info_id
-LEFT JOIN consult_info ci ON t.consult_info_id = ci.consult_info_id
-LEFT JOIN teacher_list tl ON t.teacher_id = tl.teacher_id
+FROM yrkesco.teacher t
+LEFT JOIN yrkesco.consult_info ci ON t.consult_info_id = ci.consult_info_id
+LEFT JOIN yrkesco.staff_info s 
+    ON s.staff_info_id = t.staff_info_id OR s.staff_info_id = ci.staff_info_id
+LEFT JOIN yrkesco.teacher_list tl 
+    ON t.teacher_id = tl.teacher_id
 GROUP BY teacher_name
 ORDER BY courses_taught DESC;
 
+--- Counting grades per class year
 
---- Ranking of teachers performance of having students with grade VG
+SELECT 
+    cl.year,
+     COUNT(CASE WHEN se.grade = 'G' THEN 1 END) AS g_count,
+    COUNT(CASE WHEN se.grade = 'VG' THEN 1 END) AS vg_count,
+    COUNT(CASE WHEN se.grade = 'IG' THEN 1 END) AS ig_count
+FROM yrkesco.student_enrollment se
+JOIN yrkesco.course_enrollment ce ON se.course_id = ce.course_id
+JOIN yrkesco.class cl ON ce.class_id = cl.class_id
+WHERE cl.year IN (2022, 2023, 2024)
+GROUP BY cl.year
+ORDER BY cl.year;
 
-SET search_path TO yrkesco;
-
-SELECT
-    COALESCE(si.first_name, ci.first_name) || ' ' || COALESCE(si.last_name, ci.last_name) AS teacher_name,
-    COUNT(se.grade) AS total_grades,
-    ROUND(100.0 * COUNT(CASE WHEN se.grade = 'VG' THEN 1 END) / COUNT(se.grade), 1) AS vg_percentage
-FROM teacher t
-LEFT JOIN staff_info si ON t.staff_info_id = si.staff_info_id
-LEFT JOIN consult_info ci ON t.consult_info_id = ci.consult_info_id
-JOIN teacher_list tl ON t.teacher_id = tl.teacher_id
-JOIN student_enrollment se ON tl.course_id = se.course_id
-GROUP BY teacher_name
-ORDER BY vg_percentage DESC;
-
-
----  Are there any relation between consultants salaries and students performance?
-
-SET search_path TO yrkesco;
-
-SELECT
-    ci.first_name || ' ' || ci.last_name AS consultant_name,
-    ci.fee_hour,
-    ROUND(AVG(
-        CASE se.grade
-            WHEN 'IG' THEN 0
-            WHEN 'G' THEN 1
-            WHEN 'VG' THEN 2
-        END
-    ), 2) AS avg_grade_score,
-    COUNT(se.grade) AS total_grades
-FROM teacher t
-JOIN consult_info ci ON t.consult_info_id = ci.consult_info_id
-JOIN teacher_list tl ON t.teacher_id = tl.teacher_id
-JOIN student_enrollment se ON tl.course_id = se.course_id
-GROUP BY consultant_name, ci.fee_hour
-ORDER BY avg_grade_score DESC;
-
---- Does student who wook an extra course perform better than student who didn´t?
-
-SET search_path TO yrkesco;
-
-WITH
--- 1. Score grades numerically
-graded_students AS (
-  SELECT 
-    se.student_id,
-    CASE se.grade
-      WHEN 'IG' THEN 0
-      WHEN 'G' THEN 1
-      WHEN 'VG' THEN 2
-    END AS numeric_grade,
-    se.course_id
-  FROM student_enrollment se
-),
-
--- 2. Identify students who took any course outside of program
-students_outside AS (
-  SELECT DISTINCT gs.student_id
-  FROM graded_students gs
-  JOIN course_outside_program cop ON gs.course_id = cop.course_id
-),
-
--- 3. Average grades for both groups
-grouped_scores AS (
-  SELECT
-    CASE
-      WHEN so.student_id IS NOT NULL THEN 'Took extra course'
-      ELSE 'Only program courses'
-    END AS student_group,
-    gs.numeric_grade
-  FROM graded_students gs
-  LEFT JOIN students_outside so ON gs.student_id = so.student_id
-)
-
-SELECT
-  student_group,
-  ROUND(AVG(numeric_grade), 2) AS avg_grade,
-  COUNT(*) AS total_grades
-FROM grouped_scores
-GROUP BY student_group;
-
-
---- Whats the average employment time for a Course Director?
-
+--- Query which courses the consultants have
 
 SET search_path TO yrkesco;
 
 SELECT 
-  ROUND(AVG(CURRENT_DATE - si.hire_date)) AS avg_days_employed,
-  ROUND(AVG((CURRENT_DATE - si.hire_date) / 365.0), 2) AS avg_years_employed
-FROM course_director cd
-JOIN staff_info si ON cd.staff_info_id = si.staff_info_id;
+    s.first_name || ' ' || s.last_name AS consultant_name,
+    c.company_name,
+    co.name AS course_name,
+    co.points
+FROM yrkesco.teacher t
+JOIN yrkesco.consult_info c ON t.consult_info_id = c.consult_info_id
+JOIN yrkesco.staff_info s ON c.staff_info_id = s.staff_info_id
+JOIN yrkesco.teacher_list tl ON t.teacher_id = tl.teacher_id
+JOIN yrkesco.course co ON tl.course_id = co.course_id
+ORDER BY consultant_name, course_name;
+
 
 --- Which school has most students?
 

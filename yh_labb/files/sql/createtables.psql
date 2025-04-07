@@ -6,8 +6,7 @@ CREATE TABLE
     IF NOT EXISTS school (
         school_id SERIAL PRIMARY KEY,
         name VARCHAR(50) NOT NULL,
-        location VARCHAR(50) NOT NULL,
-        address VARCHAR(255) NOT NULL
+        location VARCHAR(50) NOT NULL
     );
 
 SET search_path to yrkesco;
@@ -115,19 +114,18 @@ SET search_path to yrkesco;
 CREATE TABLE
     IF NOT EXISTS consult_info (
         consult_info_id SERIAL PRIMARY KEY,
-        first_name VARCHAR(50) NOT NULL,
-        last_name VARCHAR(50) NOT NULL,
-        address VARCHAR(255) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        hire_date DATE NOT NULL,
+        staff_info_id INTEGER NOT NULL,
         personal_number VARCHAR(12) UNIQUE NOT NULL, 
         company_name VARCHAR(100) NOT NULL,
         company_info VARCHAR(100) NOT NULL,  
         organization_number BIGINT NOT NULL,
         approved_ftax BOOLEAN NOT NULL,
         company_address VARCHAR (255) NOT NULL,
-        fee_hour INTEGER NOT NULL
+        fee_hour INTEGER NOT NULL,
+        FOREIGN KEY (staff_info_id) REFERENCES staff_info (staff_info_id) ON DELETE CASCADE    
+
     );
+
 
 SET search_path to yrkesco;
 
@@ -142,8 +140,6 @@ CREATE TABLE IF NOT EXISTS teacher (
      OR (staff_info_id IS NULL AND consult_info_id IS NOT NULL)
     )
 );
-
-SET search_path to yrkesco;
 
 
 CREATE TABLE
