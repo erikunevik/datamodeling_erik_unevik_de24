@@ -1,3 +1,8 @@
+--- To see some of the query results without having to ingest all tables into postgres to run them yourself, 
+--- check the powerpoint presentation where they are saved.
+
+
+
 --- Showing which programs that run on which schools
 
 SET search_path TO yrkesco;
@@ -65,7 +70,6 @@ ORDER BY course_director, class_id;
 
 --- To see all courses bound for the different programs in year 2022. 
 
-
 SET search_path TO yrkesco;
 
 SELECT
@@ -79,52 +83,22 @@ WHERE cl.year = 2022
 ORDER BY p.name, c.name;
 
 
--- How many of the Data Engineer students of year 2022 got an IG in the course Python programming?
-
-SELECT COUNT(DISTINCT se.student_id) AS num_students
-FROM yrkesco.student_enrollment se
-JOIN yrkesco.course c ON se.course_id = c.course_id
-JOIN yrkesco.class cl ON cl.class_id IN (
-    SELECT ce.class_id
-    FROM yrkesco.course_enrollment ce
-    WHERE ce.course_id = c.course_id
-)
-JOIN yrkesco.program p ON cl.program_id = p.program_id
-JOIN yrkesco.program_enrollment pe ON p.program_id = pe.program_id
-JOIN yrkesco.school s ON pe.school_id = s.school_id
-WHERE 
-    s.location = 'Göteborg'
-    AND c.name = 'Python Programming'
-    AND p.name = 'Data Engineer'
-    AND cl.year = 2022
-    AND se.grade = 'IG';
-
-
--- How many program students got the grade G in the year of 2022 vs 2023?    
-
+--- Courses connected to programs with number of students
 
 SET search_path TO yrkesco;
 
 SELECT
-    p.name AS program,
-    cl.year,
-    ROUND(
-        100.0 * COUNT(CASE WHEN se.grade = 'G' THEN 1 END) / COUNT(se.grade),
-        1
-    ) AS percent_G
-FROM student_enrollment se
-JOIN course c ON se.course_id = c.course_id
-JOIN course_enrollment ce ON ce.course_id = c.course_id
-JOIN class cl ON ce.class_id = cl.class_id
-JOIN program p ON cl.program_id = p.program_id
-WHERE cl.year IN (2022, 2023)
-GROUP BY p.name, cl.year
-ORDER BY p.name, cl.year;
+    c.name AS course,
+    COUNT(DISTINCT se.student_id) AS student_count
+FROM course c
+JOIN course_enrollment ce ON c.course_id = ce.course_id
+JOIN student_enrollment se ON ce.course_id = se.course_id
+GROUP BY c.name
+ORDER BY student_count DESC, c.name;
 
 --- How many students study courses outside of their program?
 
 SET search_path TO yrkesco;
-
 SELECT
     s.name AS school,
     c.name AS course_name,

@@ -150,7 +150,6 @@ INSERT INTO yrkesco.course (name, points, description) VALUES
 
 -- Railway Project Engineer
 ('Railway Safety Standards', 20, 'Regulations and practices in railway projects'),
-('Track Construction & Planning', 25, 'Planning and layout of rail systems'),
 ('Project Management Basics', 15, 'Managing timelines, resources, and teams'),
 ('Technical Documentation', 10, 'Professional report and document creation'),
 
@@ -158,7 +157,6 @@ INSERT INTO yrkesco.course (name, points, description) VALUES
 ('Cyber Threats & Defense', 25, 'Understanding modern cyber threats'),
 ('Network Security Fundamentals', 20, 'Protecting networks and systems'),
 ('Ethical Hacking Basics', 15, 'Intro to penetration testing and white-hat practices'),
-('Security Auditing & Compliance', 20, 'Assessing systems and meeting security standards'),
 
 -- Electrical Installation Project Manager
 ('Electrical Systems & Safety', 20, 'Working with electrical installations safely'),
